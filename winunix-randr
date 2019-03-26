@@ -1,0 +1,107 @@
+#!/usr/bin/node
+
+const exec = require('child_process').execSync;
+let xRandR = exec('xrandr');
+let rawOuts = exec("xrandr | awk '/connected/{print $1}'");
+let outs = `${rawOuts}`.split("\n");
+outs.splice(-1,1);
+let rawRands = `${xRandR}`.split('\n');
+
+let tela = outs.shift();
+let telaAtual = '';
+let resols = [];
+let indexRes = -1;
+
+for(i in rawRands) {
+	let lineRand = rawRands[i];
+
+	if(lineRand.includes(tela)) {
+		indexRes++;
+		telaAtual = tela;
+		tela = outs.shift();
+		resols[indexRes] = { name: telaAtual, activate: false, res: [] };
+		if(lineRand.includes(' connected'))
+			resols[indexRes].activate = true;
+		continue;
+	}
+
+	let resol = lineRand.match(/[0-9]{1,4}x[0-9]{1,4}/g);
+
+	if( (resol != '' && resol != null) && telaAtual != '') {
+		resols[indexRes].res.push(resol[0]);
+	}
+}
+
+let firstTela = null;
+let secTela = null;
+let contTela = 0;
+for(i in resols) {
+	if(resols[i].activate){
+		if(contTela == 0) {
+			firstTela = i;
+			contTela++;
+		} else {
+			secTela = i;
+			break;
+		}
+	}
+}
+
+let firstScreenName = resols[firstTela].name;
+let secScreenName = null;
+if(secTela != null) secScreenName = resols[secTela].name;
+
+if(secTela == null) {
+	let maxFirstRes = resols[firstTela].res[0];
+	let outFirst = exec(`xrandr --output ${firstScreenName} --mode ${maxFirstRes}`);
+	console.log("Nao ha tela extra disponivel!");
+	process.exit();
+}
+
+let hasEqualScreen = false;
+let equalScreen = null;
+for(i in resols[firstTela].res) {
+	let telaA = resols[firstTela].res[i];
+	for(j in resols[secTela].res){
+		let telaB = resols[secTela].res[j];
+		if(telaA == telaB) {
+			equalScreen = telaA;
+			hasEqualScreen = true;
+			break;
+		}
+	}
+	if(hasEqualScreen) break;
+}
+
+let mode = process.argv[2];
+let maxFirstRes = resols[firstTela].res[0];
+let maxSecRes = resols[secTela].res[0];
+switch(mode) {
+	case "--only-first":
+		exec(`xrandr --output ${firstScreenName} --mode ${maxFirstRes}`);
+		exec(`xrandr --output ${secScreenName} --off`);
+		console.log("Using: "+maxFirstRes);
+		console.log("Mode only first screen");
+		break;
+	case "--extend":
+		exec(`xrandr --output ${firstScreenName} --mode ${maxFirstRes}`);
+		exec(`xrandr --output ${secScreenName} --mode ${maxSecRes} --right-of ${firstScreenName} --auto`);
+		console.log("Using: "+maxFirstRes+" and "+maxSecRes);
+		console.log("Mode extend");
+		break;
+	case "--only-sec":
+		exec(`xrandr --output ${secScreenName} --mode ${maxSecRes}`);
+		exec(`xrandr --output ${firstScreenName} --off`);
+		console.log("Using: "+maxSecRes);
+		console.log("Mode only second screen");
+		break;
+	case "--duplicate":
+	default:
+		exec(`xrandr --output ${firstScreenName} --mode ${equalScreen}`);
+		exec(`xrandr --output ${secScreenName} --mode ${equalScreen} --same-as ${firstScreenName} --auto`);
+		console.log("Using: "+equalScreen);
+		console.log("Mode duplicate");
+}
+
+
+
