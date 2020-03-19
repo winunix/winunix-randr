@@ -1,0 +1,6 @@
+#!/bin/bash
+
+lxhotkey app "winunix-randr-gtk" --
+sleep 3
+lxhotkey app "winunix-randr-gtk" "<Super>P"
+sed -i "s/wrandr-hotkey-enable//g" ~/.config/lxsession/Lubuntu/autostart

@@ -15,21 +15,25 @@ class MyWindow(Gtk.Window):
         self.box = Gtk.Box(spacing=6)
         self.add(self.box)
 
-        self.button1 = Gtk.Button(label="So PC")
+        self.button1 = Gtk.Button(label="Somente PC")
         self.button1.connect("clicked", self.on_button1_clicked)
         self.box.pack_start(self.button1, True, True, 0)
 
-        self.button2 = Gtk.Button(label="Duplicar")
+        self.button2 = Gtk.Button(label="  Duplicar  ")
         self.button2.connect("clicked", self.on_button2_clicked)
         self.box.pack_start(self.button2, True, True, 0)
 
-        self.button3 = Gtk.Button(label="Extender")
+        self.button3 = Gtk.Button(label="  Extender  ")
         self.button3.connect("clicked", self.on_button3_clicked)
         self.box.pack_start(self.button3, True, True, 0)
 
         self.button4 = Gtk.Button(label="So Segunda Tela")
         self.button4.connect("clicked", self.on_button4_clicked)
         self.box.pack_start(self.button4, True, True, 0)
+
+        self.button5 = Gtk.Button(label="Mais Opções")
+        self.button5.connect("clicked", self.on_button5_clicked)
+        self.box.pack_start(self.button5, True, True, 0)
 
     def on_button1_clicked(self, widget):
         os.system("winunix-randr --only-first")
@@ -45,6 +49,10 @@ class MyWindow(Gtk.Window):
 
     def on_button4_clicked(self, widget):
         os.system("winunix-randr --only-sec")
+        Gtk.main_quit()
+    
+    def on_button5_clicked(self, widget):
+        os.system("lxrandr &")
         Gtk.main_quit()
 
 win = MyWindow()
