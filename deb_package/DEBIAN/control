@@ -1,11 +1,11 @@
 Package: winunix-randr
-Version: 0.0.1
-Installed-Size: 
+Version: 0.0.2
+Installed-Size: 6
 Maintainer: ailtonbsj <ailton.ifce@gmail.com>
 Section: utils
 Architecture: all
 Priority: optional
-Depends: nodejs, python-gi
+Depends: nodejs, python3-gi
 Homepage: https://github.com/ailtonbsj/winunix-randr
 Description: A tool for manipulating screens with projectors using xrandr.
  You can run the application winunix-randr-gtk with hot key Super + P to choose which mode of screen you want.

@@ -52,7 +52,7 @@ class MyWindow(Gtk.Window):
         Gtk.main_quit()
     
     def on_button5_clicked(self, widget):
-        os.system("lxrandr &")
+        os.system("xfce4-display-settings &")
         Gtk.main_quit()
 
 win = MyWindow()

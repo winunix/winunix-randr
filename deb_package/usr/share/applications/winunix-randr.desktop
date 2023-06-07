@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=WinuniX Display
+Name[pt_BR]=WinuniX Monitor
+Comment=Configure screen settings and layout
+Comment[pt]=Configurar duas telas e projetores
+Keywords=display;settings;screen;resolution;refresh;rate;rotation;external;projectors;monitors;LCD;CRT;HiDPI;
+Keywords[pt_BR]=visor;definições;tela;resolução;atualização;taxa;rotação;externos;projetores;monitores;LCD;CRT;HiDPI;
+Exec=winunix-randr-gtk
+Icon=org.xfce.settings.display
+Terminal=false
+Type=Application
+Categories=System;

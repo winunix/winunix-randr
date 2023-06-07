@@ -1,4 +1,0 @@
-#!/bin/bash
-
-lxhotkey app "winunix-randr-gtk" --
-sed -i "s/wrandr-hotkey-disable//g" ~/.config/lxsession/Lubuntu/autostart
